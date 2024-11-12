@@ -92,21 +92,26 @@ VALUES
     ('Sci-Fi', 2),       -- Books
     ('Rock', 3),         -- Music
     ('Pop', 3),          -- Music
-    ('Hip-Hop', 3);      -- Music
+    ('Hip-Hop', 3),      -- Music
+    ('Superhero', 5);    -- Comics
 
 -- Insert data into Item Table
 INSERT INTO Item (ItemName, ReleaseYear, GenreID)
 VALUES 
-    ('God of War', 2018, 2),     -- RPG, Games
-    ('Dune', 1965, 4),           -- Sci-Fi, Books
-    ('Crazy in Love', 2003, 6),  -- Pop, Music
-    ('Fancy', 2010, 7),          -- Hip-Hop, Music
-    ('Uptown Funk', 2014, 6),    -- Pop, Music
-    ('Lose You to Love Me', 2019, 6), -- Pop, Music
-    ('Harry Potter and the Sorcerers Stone', 1997, 3),  -- Fantasy, Books
-    ('The Lightning Thief', 2005, 3),                   -- Fantasy, Books
-    ('Super Mario Odyssey', 2017, 1),                   -- Platformer, Games
-    ('Sonic the Hedgehog', 1991, 1);                    -- Platformer, Games
+    ('God of War', 2018, 2),                         -- RPG, Games
+    ('Dune', 1965, 4),                               -- Sci-Fi, Books
+    ('Crazy in Love', 2003, 6),                      -- Pop, Music
+    ('Fancy', 2010, 7),                              -- Hip-Hop, Music
+    ('Uptown Funk', 2014, 6),                        -- Pop, Music
+    ('Lose You to Love Me', 2019, 6),                -- Pop, Music
+    ('Harry Potter and the Sorcerer Stone', 1997, 3),  -- Fantasy, Books
+    ('The Lightning Thief', 2005, 3),                -- Fantasy, Books
+    ('Super Mario Odyssey', 2017, 1),                -- Platformer, Games
+    ('Sonic the Hedgehog', 1991, 1),                 -- Platformer, Games
+    ('Spider-Man: Homecoming', 2017, 8),             -- Superhero, Comics
+    ('Batman: Year One', 1987, 8),                   -- Superhero, Comics
+    ('X-Men: Days of Future Past', 1981, 8),         -- Superhero, Comics
+    ('Justice League: Origin', 2011, 8);             -- Superhero, Comics
 
 -- Insert data into Platform Table
 INSERT INTO Platform (PlatformName)
@@ -117,7 +122,9 @@ VALUES
     ('Spotify'),
     ('Nintendo Switch'),
     ('Xbox'),
-    ('Apple Books');
+    ('Apple Books'),
+    ('Digital'),
+    ('Trade Paperback');
 
 -- Insert data into AgeRating Table
 INSERT INTO AgeRating (AgeRatingName)
@@ -140,7 +147,11 @@ VALUES
     (7, 3),  -- Harry Potter on Hardcover
     (8, 3),  -- The Lightning Thief on Hardcover
     (9, 5),  -- Super Mario Odyssey on Nintendo Switch
-    (10, 5); -- Sonic the Hedgehog on Nintendo Switch
+    (10, 5), -- Sonic the Hedgehog on Nintendo Switch
+    (11, 8), -- Spider-Man: Homecoming as Digital
+    (12, 9), -- Batman: Year One as Trade Paperback
+    (13, 8), -- X-Men: Days of Future Past as Digital
+    (14, 9); -- Justice League: Origin as Trade Paperback
 
 -- Insert data into MediaTypeGenre Table
 INSERT INTO MediaTypeGenre (MediaTypeID, GenreID)
@@ -151,7 +162,8 @@ VALUES
     (2, 4),  -- Books linked with Sci-Fi genre
     (3, 5),  -- Music linked with Rock genre
     (3, 6),  -- Music linked with Pop genre
-    (3, 7);  -- Music linked with Hip-Hop genre
+    (3, 7),  -- Music linked with Hip-Hop genre
+    (5, 8);  -- Comics linked with Superhero genre
 
 -- Insert data into ItemAgeRating Table to link items to their age ratings
 INSERT INTO ItemAgeRating (ItemID, AgeRatingID)
@@ -165,4 +177,8 @@ VALUES
     (7, 1),  -- Harry Potter has E for Everyone rating
     (8, 1),  -- The Lightning Thief has E for Everyone rating
     (9, 1),  -- Super Mario Odyssey has E for Everyone rating
-    (10, 1); -- Sonic the Hedgehog has E for Everyone rating
+    (10, 1), -- Sonic the Hedgehog has E for Everyone rating
+    (11, 3), -- Spider-Man: Homecoming has PG-13 rating
+    (12, 3), -- Batman: Year One has PG-13 rating
+    (13, 3), -- X-Men: Days of Future Past has PG-13 rating
+    (14, 3); -- Justice League: Origin has PG-13 rating
