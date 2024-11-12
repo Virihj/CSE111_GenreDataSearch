@@ -93,25 +93,31 @@ VALUES
     ('Rock', 3),         -- Music
     ('Pop', 3),          -- Music
     ('Hip-Hop', 3),      -- Music
-    ('Superhero', 5);    -- Comics
+    ('Superhero', 5),    -- Comics
+    ('Renaissance', 6);  -- Art
 
 -- Insert data into Item Table
 INSERT INTO Item (ItemName, ReleaseYear, GenreID)
 VALUES 
-    ('God of War', 2018, 2),                         -- RPG, Games
-    ('Dune', 1965, 4),                               -- Sci-Fi, Books
-    ('Crazy in Love', 2003, 6),                      -- Pop, Music
-    ('Fancy', 2010, 7),                              -- Hip-Hop, Music
-    ('Uptown Funk', 2014, 6),                        -- Pop, Music
-    ('Lose You to Love Me', 2019, 6),                -- Pop, Music
-    ('Harry Potter and the Sorcerer Stone', 1997, 3),  -- Fantasy, Books
-    ('The Lightning Thief', 2005, 3),                -- Fantasy, Books
-    ('Super Mario Odyssey', 2017, 1),                -- Platformer, Games
-    ('Sonic the Hedgehog', 1991, 1),                 -- Platformer, Games
-    ('Spider-Man: Homecoming', 2017, 8),             -- Superhero, Comics
-    ('Batman: Year One', 1987, 8),                   -- Superhero, Comics
-    ('X-Men: Days of Future Past', 1981, 8),         -- Superhero, Comics
-    ('Justice League: Origin', 2011, 8);             -- Superhero, Comics
+    ('God of War', 2018, 2),                           -- RPG, Games
+    ('Dune', 1965, 4),                                 -- Sci-Fi, Books
+    ('Crazy in Love', 2003, 6),                        -- Pop, Music
+    ('Fancy', 2010, 7),                                -- Hip-Hop, Music
+    ('Uptown Funk', 2014, 6),                          -- Pop, Music
+    ('Lose You to Love Me', 2019, 6),                  -- Pop, Music
+    ('Harry Potter and the Sorcerers Stone', 1997, 3),  -- Fantasy, Books
+    ('The Lightning Thief', 2005, 3),                  -- Fantasy, Books
+    ('Super Mario Odyssey', 2017, 1),                  -- Platformer, Games
+    ('Sonic the Hedgehog', 1991, 1),                   -- Platformer, Games
+    ('Spider-Man: Homecoming', 2017, 8),               -- Superhero, Comics
+    ('Batman: Year One', 1987, 8),                     -- Superhero, Comics
+    ('X-Men: Days of Future Past', 1981, 8),           -- Superhero, Comics
+    ('Justice League: Origin', 2011, 8),               -- Superhero, Comics
+    ('Mona Lisa', 1503, 9),                            -- Renaissance, Art
+    ('The Last Supper', 1498, 9),                      -- Renaissance, Art
+    ('Starry Night', 1889, 9),                         -- Renaissance, Art
+    ('Girl with a Pearl Earring', 1665, 9),            -- Renaissance, Art
+    ('The Creation of Adam', 1512, 9);                 -- Renaissance, Art
 
 -- Insert data into Platform Table
 INSERT INTO Platform (PlatformName)
@@ -124,7 +130,8 @@ VALUES
     ('Xbox'),
     ('Apple Books'),
     ('Digital'),
-    ('Trade Paperback');
+    ('Trade Paperback'),
+    ('Museum');
 
 -- Insert data into AgeRating Table
 INSERT INTO AgeRating (AgeRatingName)
@@ -151,7 +158,12 @@ VALUES
     (11, 8), -- Spider-Man: Homecoming as Digital
     (12, 9), -- Batman: Year One as Trade Paperback
     (13, 8), -- X-Men: Days of Future Past as Digital
-    (14, 9); -- Justice League: Origin as Trade Paperback
+    (14, 9), -- Justice League: Origin as Trade Paperback
+    (15, 10), -- Mona Lisa in Museum
+    (16, 10), -- The Last Supper in Museum
+    (17, 10), -- Starry Night in Museum
+    (18, 10), -- Girl with a Pearl Earring in Museum
+    (19, 10); -- The Creation of Adam in Museum
 
 -- Insert data into MediaTypeGenre Table
 INSERT INTO MediaTypeGenre (MediaTypeID, GenreID)
@@ -163,7 +175,8 @@ VALUES
     (3, 5),  -- Music linked with Rock genre
     (3, 6),  -- Music linked with Pop genre
     (3, 7),  -- Music linked with Hip-Hop genre
-    (5, 8);  -- Comics linked with Superhero genre
+    (5, 8),  -- Comics linked with Superhero genre
+    (6, 9);  -- Art linked with Renaissance genre
 
 -- Insert data into ItemAgeRating Table to link items to their age ratings
 INSERT INTO ItemAgeRating (ItemID, AgeRatingID)
