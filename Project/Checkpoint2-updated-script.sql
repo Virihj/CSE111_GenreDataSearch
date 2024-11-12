@@ -4,15 +4,18 @@ DROP TABLE IF EXISTS Genre;
 DROP TABLE IF EXISTS MediaType;
 DROP TABLE IF EXISTS Platform;
 DROP TABLE IF EXISTS MediaTypeGenre;
+DROP TABLE IF EXISTS Author;
+DROP TABLE IF EXISTS AuthorItem;
+DROP TABLE IF EXISTS AgeRating;
+DROP TABLE IF EXISTS ItemAgeRating;
 
-
--- 2. Create MediaType Table
+-- 1. Create MediaType Table
 CREATE TABLE MediaType (
     MediaTypeID INTEGER PRIMARY KEY AUTOINCREMENT,
     MediaTypeName TEXT NOT NULL
 );
 
--- 3. Create Genre Table
+-- 2. Create Genre Table
 CREATE TABLE Genre (
     GenreID INTEGER PRIMARY KEY AUTOINCREMENT,
     GenreName TEXT NOT NULL,
@@ -20,7 +23,7 @@ CREATE TABLE Genre (
     FOREIGN KEY (MediaTypeID) REFERENCES MediaType(MediaTypeID)
 );
 
--- 4. Create Item Table
+-- 3. Create Item Table
 CREATE TABLE Item (
     ItemID INTEGER PRIMARY KEY AUTOINCREMENT,
     ItemName TEXT NOT NULL,
@@ -29,13 +32,19 @@ CREATE TABLE Item (
     FOREIGN KEY (GenreID) REFERENCES Genre(GenreID)
 );
 
--- 5. Create Platform Table
+-- 4. Create Platform Table
 CREATE TABLE Platform (
     PlatformID INTEGER PRIMARY KEY AUTOINCREMENT,
     PlatformName TEXT NOT NULL
 );
 
--- Create MediaTypeGenre Table (Junction Table for MediaType and Genre)
+-- 5. Create AgeRating Table
+CREATE TABLE AgeRating (
+    AgeRatingID INTEGER PRIMARY KEY AUTOINCREMENT,
+    AgeRatingName TEXT NOT NULL
+);
+
+-- 6. Create MediaTypeGenre Table (Junction Table for MediaType and Genre)
 CREATE TABLE MediaTypeGenre (
     MediaTypeGenreID INTEGER PRIMARY KEY AUTOINCREMENT,
     MediaTypeID INTEGER NOT NULL,
@@ -45,7 +54,7 @@ CREATE TABLE MediaTypeGenre (
     UNIQUE (MediaTypeID, GenreID) -- Ensure each MediaType-Genre combination is unique
 );
 
--- 6. Create ItemPlatform Table (Junction Table for Item and Platform)
+-- 7. Create ItemPlatform Table (Junction Table for Item and Platform)
 CREATE TABLE ItemPlatform (
     ItemPlatformID INTEGER PRIMARY KEY AUTOINCREMENT,
     ItemID INTEGER,
@@ -55,7 +64,17 @@ CREATE TABLE ItemPlatform (
     FOREIGN KEY (PlatformID) REFERENCES Platform(PlatformID)
 );
 
--- 7. Insert Data into MediaType Table
+-- 8. Create ItemAgeRating Table (Junction Table for Item and AgeRating)
+CREATE TABLE ItemAgeRating (
+    ItemAgeRatingID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ItemID INTEGER NOT NULL,
+    AgeRatingID INTEGER NOT NULL,
+    FOREIGN KEY (ItemID) REFERENCES Item(ItemID),
+    FOREIGN KEY (AgeRatingID) REFERENCES AgeRating(AgeRatingID),
+    UNIQUE (ItemID, AgeRatingID) -- Prevent duplicate entries for the same item-age rating pair
+);
+
+-- Insert data into MediaType Table
 INSERT INTO MediaType (MediaTypeName)
 VALUES 
     ('Games'),
@@ -66,7 +85,7 @@ VALUES
     ('Art'),
     ('Podcasts');
 
--- 8. Insert Data into Genre Table
+-- Insert data into Genre Table
 INSERT INTO Genre (GenreName, MediaTypeID)
 VALUES 
     ('FPS', 1),          -- Games
@@ -76,14 +95,14 @@ VALUES
     ('Rock', 3),         -- Music
     ('Pop', 3);          -- Music
 
--- 9. Insert Data into Item Table
+-- Insert data into Item Table
 INSERT INTO Item (ItemName, ReleaseYear, GenreID)
 VALUES 
     ('God of War', 2018, 2),     -- RPG, Games
     ('Dune', 1965, 4),           -- Sci-Fi, Books
     ('Crazy in Love', 2003, 6);  -- Pop, Music
 
--- 10. Insert Data into Platform Table
+-- Insert data into Platform Table
 INSERT INTO Platform (PlatformName)
 VALUES 
     ('PlayStation'),
@@ -91,7 +110,15 @@ VALUES
     ('Hardcover'),
     ('Spotify');
 
--- 11. Insert Data into ItemPlatform Table
+-- Insert data into AgeRating Table
+INSERT INTO AgeRating (AgeRatingName)
+VALUES 
+    ('E for Everyone'),
+    ('M for Mature'),
+    ('PG-13'),
+    ('R');
+
+-- Insert data into ItemPlatform Table
 INSERT INTO ItemPlatform (ItemID, PlatformID)
 VALUES 
     (1, 1),  -- God of War on PlayStation
@@ -99,7 +126,7 @@ VALUES
     (2, 3),  -- Dune as Hardcover
     (3, 4);  -- Crazy in Love on Spotify
 
--- Insert Data into MediaTypeGenre Table
+-- Insert data into MediaTypeGenre Table
 INSERT INTO MediaTypeGenre (MediaTypeID, GenreID)
 VALUES 
     (1, 1),  -- Games linked with FPS genre
@@ -108,3 +135,10 @@ VALUES
     (2, 4),  -- Books linked with Sci-Fi genre
     (3, 5),  -- Music linked with Rock genre
     (3, 6);  -- Music linked with Pop genre
+
+-- Insert data into ItemAgeRating Table to link items to their age ratings
+INSERT INTO ItemAgeRating (ItemID, AgeRatingID)
+VALUES 
+    (1, 2),  -- God of War has M for Mature rating
+    (2, 3),  -- Dune has PG-13 rating
+    (3, 1);  -- Crazy in Love has E for Everyone rating
