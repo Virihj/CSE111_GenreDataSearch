@@ -85,28 +85,28 @@ VALUES
 -- Insert data into Genre Table
 INSERT INTO Genre (GenreName, MediaTypeID)
 VALUES 
-    ('FPS', 1),          -- Games
-    ('RPG', 1),          -- Games
-    ('Story', 1),        -- Games
-    ('MMO', 1),          -- Games
-    ('MOBA', 1),         -- Games
-    ('Fantasy', 2),      -- Books
-    ('Sci-Fi', 2),       -- Books
-    ('Comic', 2),        -- Books
-    ('Rock', 3),         -- Music
-    ('Pop', 3),          -- Music
-    ('Hip-Hop', 3),      -- Music
-    ('Metal', 3),        -- Music
-    ('Documentary', 4),  -- Movies/Shows
-    ('Thriller', 4),     -- Movies/Shows
-    ('Abstract', 5),     -- Art
-    ('Realism', 5),      -- Art
-    ('Surrealism', 5),   -- Art
-    ('Impressionism', 5),-- Art
-    ('Renaissance', 5),  -- Art
-    ('Romance', 6),      -- Mix
-    ('Comedy', 6),       -- Mix
-    ('Action', 6);       -- Mix
+    ('FPS', 1),          -- Games 1
+    ('RPG', 1),          -- Games 2
+    ('Story', 1),        -- Games 3
+    ('MMO', 1),          -- Games 4
+    ('MOBA', 1),         -- Games 5
+    ('Fantasy', 2),      -- Books 6
+    ('Sci-Fi', 2),       -- Books 7
+    ('Comic', 2),        -- Books 8
+    ('Rock', 3),         -- Music 9
+    ('Pop', 3),          -- Music 10
+    ('Hip-Hop', 3),      -- Music 11
+    ('Metal', 3),        -- Music 12
+    ('Documentary', 4),  -- Movies/Shows 13
+    ('Thriller', 4),     -- Movies/Shows 14
+    ('Abstract', 5),     -- Art 15
+    ('Realism', 5),      -- Art 16
+    ('Surrealism', 5),   -- Art 17
+    ('Impressionism', 5),-- Art 18
+    ('Renaissance', 5),  -- Art 19
+    ('Romance', 6),      -- Mix 20
+    ('Comedy', 6),       -- Mix 21
+    ('Action', 6);       -- Mix 22
 
 -- Insert data into Item Table
 INSERT INTO Item (ItemName, ReleaseYear, GenreID)
@@ -125,25 +125,25 @@ VALUES
     ('Batman: Year One', 1987, 8),                     -- Comic, Books
     ('X-Men: Days of Future Past', 1981, 8),           -- Comic, Books
     ('Justice League: Origin', 2011, 8),               -- Comic, Books
-    ('Mona Lisa', 1503, 20),                           -- Renaissance, Art
-    ('The Last Supper', 1498, 20),                     -- Renaissance, Art
-    ('Starry Night', 1889, 20),                        -- Renaissance, Art
-    ('Girl with a Pearl Earring', 1665, 20),           -- Renaissance, Art
-    ('The Creation of Adam', 1512, 20);                -- Renaissance, Art
+    ('Mona Lisa', 1503, 19),                           -- Renaissance, Art
+    ('The Last Supper', 1498, 19),                     -- Renaissance, Art
+    ('Starry Night', 1889, 19),                        -- Renaissance, Art
+    ('Girl with a Pearl Earring', 1665, 19),           -- Renaissance, Art
+    ('The Creation of Adam', 1512, 19);                -- Renaissance, Art
 
 -- Insert data into Platform Table
 INSERT INTO Platform (PlatformName)
 VALUES 
-    ('PlayStation'),
-    ('Steam'),
-    ('Hardcover'),
-    ('Spotify'),
-    ('Nintendo Switch'),
-    ('Xbox'),
-    ('Apple Books'),
-    ('Digital'),
-    ('Trade Paperback'),
-    ('Museum');
+    ('PlayStation'), --1
+    ('Steam'), --2
+    ('Hardcover'), --3
+    ('Spotify'), --4
+    ('Nintendo Switch'), --5
+    ('Xbox'), --6
+    ('Apple Books'), --7
+    ('Digital'), --8
+    ('Trade Paperback'), --9
+    ('Museum'); --10
 
 -- Insert data into AgeRating Table
 INSERT INTO AgeRating (AgeRatingName)
@@ -153,6 +153,8 @@ VALUES
     ('PG-13'),
     ('R');
 
+
+DELETE FROM ItemPlatform; -- uses this to clear out table fist when udating
 -- Insert data into ItemPlatform Table
 INSERT INTO ItemPlatform (ItemID, PlatformID)
 VALUES 
@@ -177,6 +179,8 @@ VALUES
     (18, 10), -- Girl with a Pearl Earring in Museum
     (19, 10); -- The Creation of Adam in Museum
 
+
+DELETE FROM MediaTypeGenre; -- uses this to clear out table fist when udating
 -- Insert data into MediaTypeGenre Table, using MediaTypeID = 6 (Mix) for common genres
 INSERT INTO MediaTypeGenre (MediaTypeID, GenreID)
 VALUES 
@@ -189,5 +193,5 @@ VALUES
     (4, 13), -- Movies linked with Documentary genre
     (4, 14), -- Movies linked with Thriller genre
     (5, 15), -- Art linked with Abstract genre
-    (5, 20), -- Art linked with Renaissance genre
-    (6, 20); -- Mix linked with Renaissance genre
+    (5, 19), -- Art linked with Renaissance genre
+    (6, 19); -- Mix linked with Renaissance genre
