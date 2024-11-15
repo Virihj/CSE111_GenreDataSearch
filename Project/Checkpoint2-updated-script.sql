@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS ItemAuthor;
+DROP TABLE IF EXISTS Author;
 DROP TABLE IF EXISTS ItemPlatform;
 DROP TABLE IF EXISTS Item;
 DROP TABLE IF EXISTS Genre;
@@ -70,6 +72,22 @@ CREATE TABLE ItemAgeRating (
     FOREIGN KEY (ItemID) REFERENCES Item(ItemID),
     FOREIGN KEY (AgeRatingID) REFERENCES AgeRating(AgeRatingID),
     UNIQUE (ItemID, AgeRatingID) -- Prevent duplicate entries for the same item-age rating pair
+);
+
+-- 9. Create Author Table
+CREATE TABLE Author (
+    AuthorID INTEGER PRIMARY KEY AUTOINCREMENT,
+    AuthorName TEXT NOT NULL
+);
+
+-- 10. Create ItemAuthor Table (Junction Table for Item and Author)
+CREATE TABLE ItemAuthor (
+    ItemAuthorID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ItemID INTEGER NOT NULL,
+    AuthorID INTEGER NOT NULL,
+    FOREIGN KEY (ItemID) REFERENCES Item(ItemID),
+    FOREIGN KEY (AuthorID) REFERENCES Author(AuthorID),
+    UNIQUE (ItemID, AuthorID) -- Ensure unique pairing of Item and Author
 );
 
 -- Insert data into MediaType Table, including ID 6 for "Mix"
@@ -153,8 +171,40 @@ VALUES
     ('PG-13'),
     ('R');
 
+-- Insert data into Author Table
+INSERT INTO Author (AuthorName)
+VALUES 
+    ('David Jaffe'),          -- Creator of God of War
+    ('Frank Herbert'),        -- Author of Dune
+    ('Beyoncé'),              -- Artist for Crazy in Love
+    ('Iggy Azalea'),          -- Artist for Fancy
+    ('Mark Ronson'),          -- Artist for Uptown Funk
+    ('Selena Gomez'),         -- Artist for Lose You to Love Me
+    ('Stan Lee'),             -- Writer for Spider-Man: Homecoming
+    ('Frank Miller'),         -- Writer for Batman: Year One
+    ('Chris Claremont'),      -- Writer for X-Men: Days of Future Past
+    ('Geoff Johns'),          -- Writer for Justice League: Origin
+    ('Leonardo da Vinci'),    -- Painter of The Last Supper
+    ('Johannes Vermeer'),     -- Painter of Girl with a Pearl Earring
+    ('Michelangelo');         -- Painter of The Creation of Adam
 
-DELETE FROM ItemPlatform; -- uses this to clear out table fist when udating
+-- Insert data into ItemAuthor Table to link items with authors
+INSERT INTO ItemAuthor (ItemID, AuthorID)
+VALUES 
+    (1, 5),   -- God of War by David Jaffe
+    (2, 6),   -- Dune by Frank Herbert
+    (3, 7),   -- Crazy in Love by Beyoncé
+    (4, 8),   -- Fancy by Iggy Azalea
+    (5, 9),   -- Uptown Funk by Mark Ronson
+    (6, 10),  -- Lose You to Love Me by Selena Gomez
+    (11, 11), -- Spider-Man: Homecoming by Stan Lee
+    (12, 12), -- Batman: Year One by Frank Miller
+    (13, 13), -- X-Men: Days of Future Past by Chris Claremont
+    (14, 14), -- Justice League: Origin by Geoff Johns
+    (16, 15), -- The Last Supper by Leonardo da Vinci
+    (18, 16), -- Girl with a Pearl Earring by Johannes Vermeer
+    (19, 17); -- The Creation of Adam by Michelangelo
+
 -- Insert data into ItemPlatform Table
 INSERT INTO ItemPlatform (ItemID, PlatformID)
 VALUES 
@@ -179,9 +229,7 @@ VALUES
     (18, 10), -- Girl with a Pearl Earring in Museum
     (19, 10); -- The Creation of Adam in Museum
 
-
-DELETE FROM MediaTypeGenre; -- uses this to clear out table fist when udating
--- Insert data into MediaTypeGenre Table, using MediaTypeID = 6 (Mix) for common genres
+-- Insert data into MediaTypeGenre Table
 INSERT INTO MediaTypeGenre (MediaTypeID, GenreID)
 VALUES 
     (1, 1),  -- Games linked with FPS genre
