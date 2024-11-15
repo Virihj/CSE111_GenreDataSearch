@@ -72,7 +72,7 @@ CREATE TABLE ItemAgeRating (
     UNIQUE (ItemID, AgeRatingID) -- Prevent duplicate entries for the same item-age rating pair
 );
 
--- Insert data into MediaType Table, including ID 7 for "Mix"
+-- Insert data into MediaType Table, including ID 6 for "Mix"
 INSERT INTO MediaType (MediaTypeName)
 VALUES 
     ('Games'),          --1
@@ -80,8 +80,7 @@ VALUES
     ('Music'),          --3
     ('Movies/Shows'),   --4
     ('Art'),            --5
-    ('Podcasts'),       --6
-    ('Mix');            --7
+    ('Mix');            --6
 
 -- Insert data into Genre Table
 INSERT INTO Genre (GenreName, MediaTypeID)
@@ -97,50 +96,40 @@ VALUES
     ('Rock', 3),         -- Music
     ('Pop', 3),          -- Music
     ('Hip-Hop', 3),      -- Music
-<<<<<<< HEAD
     ('Metal', 3),        -- Music
     ('Documentary', 4),  -- Movies/Shows
     ('Thriller', 4),     -- Movies/Shows
-    ('Romance', 7),      -- Mix, for multiple media types
-    ('Comedy', 7),       -- Mix, for multiple media types
-    ('Action', 7),       -- Mix, for multiple media types
     ('Abstract', 5),     -- Art
     ('Realism', 5),      -- Art
     ('Surrealism', 5),   -- Art
-    ('Impressionism', 5); -- Art
-=======
-    ('Superhero', 5),    -- Comics
-    ('Renaissance', 6);  -- Art
->>>>>>> 21dd8241b8b6be1aa5fde18d8a815ba9e7fe9784
+    ('Impressionism', 5),-- Art
+    ('Renaissance', 5),  -- Art
+    ('Romance', 6),      -- Mix
+    ('Comedy', 6),       -- Mix
+    ('Action', 6);       -- Mix
 
 -- Insert data into Item Table
 INSERT INTO Item (ItemName, ReleaseYear, GenreID)
 VALUES 
-<<<<<<< HEAD
-    ('God of War', 2018, 2),     -- RPG, Games
-    ('Dune', 1965, 7),           -- Sci-Fi, Books
-    ('Crazy in Love', 2003, 10); -- Pop, Music
-=======
     ('God of War', 2018, 2),                           -- RPG, Games
-    ('Dune', 1965, 4),                                 -- Sci-Fi, Books
-    ('Crazy in Love', 2003, 6),                        -- Pop, Music
-    ('Fancy', 2010, 7),                                -- Hip-Hop, Music
-    ('Uptown Funk', 2014, 6),                          -- Pop, Music
-    ('Lose You to Love Me', 2019, 6),                  -- Pop, Music
-    ('Harry Potter and the Sorcerers Stone', 1997, 3),  -- Fantasy, Books
-    ('The Lightning Thief', 2005, 3),                  -- Fantasy, Books
-    ('Super Mario Odyssey', 2017, 1),                  -- Platformer, Games
-    ('Sonic the Hedgehog', 1991, 1),                   -- Platformer, Games
-    ('Spider-Man: Homecoming', 2017, 8),               -- Superhero, Comics
-    ('Batman: Year One', 1987, 8),                     -- Superhero, Comics
-    ('X-Men: Days of Future Past', 1981, 8),           -- Superhero, Comics
-    ('Justice League: Origin', 2011, 8),               -- Superhero, Comics
-    ('Mona Lisa', 1503, 9),                            -- Renaissance, Art
-    ('The Last Supper', 1498, 9),                      -- Renaissance, Art
-    ('Starry Night', 1889, 9),                         -- Renaissance, Art
-    ('Girl with a Pearl Earring', 1665, 9),            -- Renaissance, Art
-    ('The Creation of Adam', 1512, 9);                 -- Renaissance, Art
->>>>>>> 21dd8241b8b6be1aa5fde18d8a815ba9e7fe9784
+    ('Dune', 1965, 7),                                 -- Sci-Fi, Books
+    ('Crazy in Love', 2003, 10),                       -- Pop, Music
+    ('Fancy', 2010, 11),                               -- Hip-Hop, Music
+    ('Uptown Funk', 2014, 10),                         -- Pop, Music
+    ('Lose You to Love Me', 2019, 10),                 -- Pop, Music
+    ('Harry Potter and the Sorcerers Stone', 1997, 6), -- Fantasy, Books
+    ('The Lightning Thief', 2005, 6),                  -- Fantasy, Books
+    ('Super Mario Odyssey', 2017, 1),                  -- FPS, Games
+    ('Sonic the Hedgehog', 1991, 1),                   -- FPS, Games
+    ('Spider-Man: Homecoming', 2017, 8),               -- Comic, Books
+    ('Batman: Year One', 1987, 8),                     -- Comic, Books
+    ('X-Men: Days of Future Past', 1981, 8),           -- Comic, Books
+    ('Justice League: Origin', 2011, 8),               -- Comic, Books
+    ('Mona Lisa', 1503, 20),                           -- Renaissance, Art
+    ('The Last Supper', 1498, 20),                     -- Renaissance, Art
+    ('Starry Night', 1889, 20),                        -- Renaissance, Art
+    ('Girl with a Pearl Earring', 1665, 20),           -- Renaissance, Art
+    ('The Creation of Adam', 1512, 20);                -- Renaissance, Art
 
 -- Insert data into Platform Table
 INSERT INTO Platform (PlatformName)
@@ -188,43 +177,17 @@ VALUES
     (18, 10), -- Girl with a Pearl Earring in Museum
     (19, 10); -- The Creation of Adam in Museum
 
--- Insert data into MediaTypeGenre Table, using MediaTypeID = 7 (Mix) for common genres
+-- Insert data into MediaTypeGenre Table, using MediaTypeID = 6 (Mix) for common genres
 INSERT INTO MediaTypeGenre (MediaTypeID, GenreID)
 VALUES 
     (1, 1),  -- Games linked with FPS genre
     (1, 2),  -- Games linked with RPG genre
-<<<<<<< HEAD
     (2, 6),  -- Books linked with Fantasy genre
     (2, 7),  -- Books linked with Sci-Fi genre
     (3, 9),  -- Music linked with Rock genre
     (3, 10), -- Music linked with Pop genre
-    (4, 15), -- Movies/Shows linked with Documentary genre
-    (7, 16), -- Mix linked with Romance genre
-    (7, 17); -- Mix linked with Comedy genre
-=======
-    (2, 3),  -- Books linked with Fantasy genre
-    (2, 4),  -- Books linked with Sci-Fi genre
-    (3, 5),  -- Music linked with Rock genre
-    (3, 6),  -- Music linked with Pop genre
-    (3, 7),  -- Music linked with Hip-Hop genre
-    (5, 8),  -- Comics linked with Superhero genre
-    (6, 9);  -- Art linked with Renaissance genre
->>>>>>> 21dd8241b8b6be1aa5fde18d8a815ba9e7fe9784
-
--- Insert data into ItemAgeRating Table to link items to their age ratings
-INSERT INTO ItemAgeRating (ItemID, AgeRatingID)
-VALUES 
-    (1, 2),  -- God of War has M for Mature rating
-    (2, 3),  -- Dune has PG-13 rating
-    (3, 1),  -- Crazy in Love has E for Everyone rating
-    (4, 1),  -- Fancy has E for Everyone rating
-    (5, 1),  -- Uptown Funk has E for Everyone rating
-    (6, 1),  -- Lose You to Love Me has E for Everyone rating
-    (7, 1),  -- Harry Potter has E for Everyone rating
-    (8, 1),  -- The Lightning Thief has E for Everyone rating
-    (9, 1),  -- Super Mario Odyssey has E for Everyone rating
-    (10, 1), -- Sonic the Hedgehog has E for Everyone rating
-    (11, 3), -- Spider-Man: Homecoming has PG-13 rating
-    (12, 3), -- Batman: Year One has PG-13 rating
-    (13, 3), -- X-Men: Days of Future Past has PG-13 rating
-    (14, 3); -- Justice League: Origin has PG-13 rating
+    (4, 13), -- Movies linked with Documentary genre
+    (4, 14), -- Movies linked with Thriller genre
+    (5, 15), -- Art linked with Abstract genre
+    (5, 20), -- Art linked with Renaissance genre
+    (6, 20); -- Mix linked with Renaissance genre
