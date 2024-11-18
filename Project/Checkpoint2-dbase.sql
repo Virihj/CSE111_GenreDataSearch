@@ -2,7 +2,8 @@
 SELECT * FROM MediaType;
 
 -- 2. Select all genres associated with books
-SELECT GenreName FROM Genre WHERE MediaTypeID = (SELECT MediaTypeID FROM MediaType WHERE MediaTypeName = 'Books');
+SELECT GenreName FROM Genre 
+WHERE MediaTypeID = (SELECT MediaTypeID FROM MediaType WHERE MediaTypeName = 'Books');
 
 -- 3. Find items released after the year 2000
 SELECT ItemName FROM Item WHERE ReleaseYear > 2000;
@@ -25,18 +26,24 @@ UPDATE Item SET ReleaseYear = 2017 WHERE ItemName = 'God of War';
 INSERT INTO Platform (PlatformName) VALUES ('Xbox');
 
 -- 8. Link 'God of War' with 'Xbox'
-INSERT INTO ItemPlatform (ItemID, PlatformID) VALUES (1, (SELECT PlatformID FROM Platform WHERE PlatformName = 'Xbox'));
+INSERT INTO ItemPlatform (ItemID, PlatformID) 
+VALUES ((SELECT ItemID FROM Item WHERE ItemName = 'God of War'), 
+        (SELECT PlatformID FROM Platform WHERE PlatformName = 'Xbox'));
 
 -- 9. Find items available on multiple platforms
-SELECT ItemName, COUNT(PlatformID) AS PlatformCount FROM ItemPlatform
+SELECT ItemName, COUNT(PlatformID) AS PlatformCount 
+FROM ItemPlatform
 GROUP BY ItemID
-HAVING PlatformCount > 1;
+HAVING COUNT(PlatformID) > 1;
 
 -- 10. Add a new genre 'Adventure' for 'Games'
-INSERT INTO Genre (GenreName, MediaTypeID) VALUES ('Adventure', (SELECT MediaTypeID FROM MediaType WHERE MediaTypeName = 'Games'));
+INSERT INTO Genre (GenreName, MediaTypeID) 
+VALUES ('Adventure', (SELECT MediaTypeID FROM MediaType WHERE MediaTypeName = 'Games'));
 
 -- 11. Assign 'Adventure' genre to 'God of War'
-UPDATE Item SET GenreID = (SELECT GenreID FROM Genre WHERE GenreName = 'Adventure') WHERE ItemName = 'God of War';
+UPDATE Item 
+SET GenreID = (SELECT GenreID FROM Genre WHERE GenreName = 'Adventure') 
+WHERE ItemName = 'God of War';
 
 -- 12. Delete the 'R' age rating
 DELETE FROM AgeRating WHERE AgeRatingName = 'R';
@@ -53,12 +60,15 @@ JOIN ItemPlatform ON Item.ItemID = ItemPlatform.ItemID
 JOIN Platform ON ItemPlatform.PlatformID = Platform.PlatformID;
 
 -- 15. Add a new item 'Cyberpunk' as a game in the RPG genre
-INSERT INTO Item (ItemName, ReleaseYear, GenreID) VALUES ('Cyberpunk', 2020, (SELECT GenreID FROM Genre WHERE GenreName = 'RPG'));
+INSERT INTO Item (ItemName, ReleaseYear, GenreID) 
+VALUES ('Cyberpunk', 2020, (SELECT GenreID FROM Genre WHERE GenreName = 'RPG'));
 
--- 16. Link 'Cyberpunk' with 'Steam' and 'Xbox'
+-- 16. Link 'Cyberpunk' with 'Steam Platform' and 'Xbox'
 INSERT INTO ItemPlatform (ItemID, PlatformID) VALUES 
-    ((SELECT ItemID FROM Item WHERE ItemName = 'Cyberpunk'), (SELECT PlatformID FROM Platform WHERE PlatformName = 'Steam')),
-    ((SELECT ItemID FROM Item WHERE ItemName = 'Cyberpunk'), (SELECT PlatformID FROM Platform WHERE PlatformName = 'Xbox'));
+    ((SELECT ItemID FROM Item WHERE ItemName = 'Cyberpunk'), 
+     (SELECT PlatformID FROM Platform WHERE PlatformName = 'Steam Platform')),
+    ((SELECT ItemID FROM Item WHERE ItemName = 'Cyberpunk'), 
+     (SELECT PlatformID FROM Platform WHERE PlatformName = 'Xbox'));
 
 -- 17. Find all items in the 'Fantasy' genre
 SELECT ItemName FROM Item
@@ -75,3 +85,8 @@ DELETE FROM Item WHERE ItemName = 'Cyberpunk';
 SELECT ItemName, AgeRatingName FROM Item
 JOIN ItemAgeRating ON Item.ItemID = ItemAgeRating.ItemID
 JOIN AgeRating ON ItemAgeRating.AgeRatingID = AgeRating.AgeRatingID;
+
+-- 21. Find the authors of items
+SELECT ItemName, AuthorName FROM Item
+JOIN ItemAuthor ON Item.ItemID = ItemAuthor.ItemID
+JOIN Author ON ItemAuthor.AuthorID = Author.AuthorID;
