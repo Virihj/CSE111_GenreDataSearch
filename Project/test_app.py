@@ -3,7 +3,7 @@ import sqlite3
 def connect_to_database():
     try:
         # Connect to the SQLite database file 'tpch.sqlite'
-        conn = sqlite3.connect('tpch.sqlite')
+        conn = sqlite3.connect('media_library.sqlite')
         print("Connected to the database successfully!")
         return conn
     except sqlite3.Error as e:
