@@ -2,7 +2,6 @@ import sqlite3
 
 def connect_to_database():
     try:
-        # Connect to the SQLite database file 'tpch.sqlite'
         conn = sqlite3.connect('media_library.sqlite')
         print("Connected to the database successfully!")
         return conn
@@ -10,63 +9,127 @@ def connect_to_database():
         print(f"Error connecting to database: {e}")
         return None
 
-def list_tables(conn):
+def list_media_types(conn):
     try:
         cursor = conn.cursor()
-        cursor.execute("SELECT name FROM sqlite_master WHERE type='table';")
-        tables = cursor.fetchall()
-        print("\nTables in the database:")
-        for table in tables:
-            print(f"- {table[0]}")
+        cursor.execute("SELECT MediaTypeID, MediaTypeName FROM MediaType;")
+        media_types = cursor.fetchall()
+        print("\nAvailable Media Types:")
+        for media in media_types:
+            print(f"- ID: {media[0]}, Name: {media[1]}")
     except sqlite3.Error as e:
-        print(f"Error retrieving tables: {e}")
+        print(f"Error retrieving media types: {e}")
 
-def describe_table(conn, table_name):
+def list_genres(conn):
     try:
         cursor = conn.cursor()
-        cursor.execute(f"PRAGMA table_info({table_name});")
-        columns = cursor.fetchall()
-        if columns:
-            print(f"\nColumns in table '{table_name}':")
-            for column in columns:
-                print(f"- {column[1]} ({column[2]})")
-        else:
-            print(f"Table '{table_name}' does not exist or has no columns.")
+        cursor.execute("SELECT GenreID, GenreName FROM Genre;")
+        genres = cursor.fetchall()
+        print("\nAvailable Genres:")
+        for genre in genres:
+            print(f"- ID: {genre[0]}, Name: {genre[1]}")
     except sqlite3.Error as e:
-        print(f"Error describing table: {e}")
+        print(f"Error retrieving genres: {e}")
+
+def list_items(conn):
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM Item;")
+        items = cursor.fetchall()
+        print("Available Items:")
+        for item in items:
+            print(item)
+    except sqlite3.Error as e:
+        print(f"Error retrieving items: {e}")
+
 
 def add_item(conn):
     try:
+        print("\nYou can add data to the following tables: MediaType, Genre, Item")
         table_name = input("Enter the table name to add an item to: ").strip()
-        if not table_name:
-            print("Table name cannot be empty.")
+        
+        if table_name not in ["MediaType", "Genre", "Item"]:
+            print("Invalid table name. You can only add to MediaType, Genre, or Item.")
             return
 
         cursor = conn.cursor()
-        cursor.execute(f"PRAGMA table_info({table_name});")
-        columns = cursor.fetchall()
-        if not columns:
-            print(f"Table '{table_name}' does not exist or has no columns.")
-            return
+        
+        if table_name == "MediaType":
+            media_type_name = input("Enter MediaTypeName: ").strip()
+            if not media_type_name:
+                print("MediaTypeName cannot be empty.")
+                return
+            cursor.execute("INSERT INTO MediaType (MediaTypeName) VALUES (?)", (media_type_name,))
+        
+        elif table_name == "Genre":
+            genre_name = input("Enter GenreName: ").strip()
+            media_type_id = input("Enter MediaTypeID: ").strip()
+            if not genre_name or not media_type_id:
+                print("GenreName and MediaTypeID cannot be empty.")
+                return
+            cursor.execute("INSERT INTO Genre (GenreName, MediaTypeID) VALUES (?, ?)", (genre_name, media_type_id))
+        
+        elif table_name == "Item":
+            item_name = input("Enter ItemName: ").strip()
+            release_year = input("Enter ReleaseYear: ").strip()
+            genre_id = input("Enter GenreID: ").strip()
+            author_name = input("Enter AuthorName: ").strip()
+            if not item_name or not release_year or not genre_id or not author_name:
+                print("ItemName, ReleaseYear, GenreID, and AuthorName cannot be empty.")
+                return
 
-        values = []
-        for column in columns:
-            if column[5] == 1:  # Check if the column is NOT NULL
-                value = input(f"Enter value for {column[1]} ({column[2]}) [Required]: ").strip()
-                if not value:
-                    print(f"{column[1]} is required. Aborting operation.")
-                    return
-            else:
-                value = input(f"Enter value for {column[1]} ({column[2]}) [Optional]: ").strip()
-            values.append(value if value else None)
+            # Insert into Item table
+            cursor.execute("INSERT INTO Item (ItemName, ReleaseYear, GenreID) VALUES (?, ?, ?)", (item_name, release_year, genre_id))
+            item_id = cursor.lastrowid
 
-        placeholders = ", ".join(["?" for _ in values])
-        query = f"INSERT INTO {table_name} VALUES ({placeholders})"
-        cursor.execute(query, values)
+            # Insert Author
+            cursor.execute("INSERT OR IGNORE INTO Author (AuthorName) VALUES (?)", (author_name,))
+            author_id = cursor.lastrowid
+
+            # Link Item and Author
+            cursor.execute("INSERT INTO ItemAuthor (ItemID, AuthorID) VALUES (?, ?)", (item_id, author_id))
+        
         conn.commit()
-        print(f"Item added successfully to '{table_name}'.")
+        print(f"Data added successfully to '{table_name}'.")
     except sqlite3.Error as e:
         print(f"Error adding item: {e}")
+
+def delete_item(conn):
+    try:
+        print("\nYou can delete data from the following tables: MediaType, Genre, Item")
+        table_name = input("Enter the table name to delete an item from: ").strip()
+
+        if table_name not in ["MediaType", "Genre", "Item"]:
+            print("Invalid table name. You can only delete from MediaType, Genre, or Item.")
+            return
+
+        cursor = conn.cursor()
+        print(f"\nAvailable columns in '{table_name}':")
+
+        if table_name == "MediaType":
+            column_name = "MediaTypeID"
+        elif table_name == "Genre":
+            column_name = "GenreID"
+        elif table_name == "Item":
+            column_name = "ItemID"
+
+        value = input(f"Enter the {column_name} of the item to delete: ").strip()
+
+        if not value:
+            print(f"{column_name} cannot be empty. Aborting operation.")
+            return
+
+        query = f"DELETE FROM {table_name} WHERE {column_name} = ?"
+        cursor.execute(query, (value,))
+        conn.commit()
+
+        if cursor.rowcount > 0:
+            print(f"Item(s) successfully deleted from '{table_name}'.")
+        else:
+            print(f"No matching rows found in '{table_name}'.")
+    except sqlite3.Error as e:
+        print(f"Error deleting item: {e}")
+
 
 def main():
     conn = connect_to_database()
@@ -74,25 +137,27 @@ def main():
         return
 
     while True:
-        print("\nMenu:")
-        print("1. List All Tables")
-        print("2. Describe a Table")
-        print("3. Add an Item")
-        print("4. Exit")
-        choice = input("Select an option: ").strip()
+        print("\n" + "=" * 40)
+        print("          MEDIA LIBRARY MANAGER")
+        print("=" * 40)
+        print("1. List Media Types")
+        print("2. List Genres")
+        print("3. List Items")
+        print("4. Add an Item")
+        print("5. Exit")
+        print("=" * 40)
+        choice = input("Enter your choice (1-5): ").strip()
 
         if choice == '1':
-            list_tables(conn)
+            list_media_types(conn)
         elif choice == '2':
-            table_name = input("Enter table name: ").strip()
-            if table_name:
-                describe_table(conn, table_name)
-            else:
-                print("Table name cannot be empty. Please try again.")
+            list_genres(conn)
         elif choice == '3':
-            add_item(conn)
+            list_items(conn)
         elif choice == '4':
-            print("Exiting the application.")
+            add_item(conn)
+        elif choice == '5':
+            print("\nThank you for using Media Library Manager!")
             break
         else:
             print("Invalid choice. Please try again.")

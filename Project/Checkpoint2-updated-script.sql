@@ -8,6 +8,7 @@ DROP TABLE IF EXISTS Platform;
 DROP TABLE IF EXISTS MediaTypeGenre;
 DROP TABLE IF EXISTS AgeRating;
 DROP TABLE IF EXISTS ItemAgeRating;
+DROP TABLE IF EXISTS Media;
 
 -- 1. Create MediaType Table
 CREATE TABLE MediaType (
@@ -15,11 +16,19 @@ CREATE TABLE MediaType (
     MediaTypeName TEXT NOT NULL
 );
 
--- 2. Create Genre Table (Allow for a "Mix" Genre with MediaTypeID = 7)
+-- 1.1. Create Genre
 CREATE TABLE Genre (
-    GenreID INTEGER PRIMARY KEY AUTOINCREMENT,
-    GenreName TEXT NOT NULL,
+    GenreID INTEGER PRIMARY KEY,
+    GenreName TEXT NOT NULL
+);
+
+-- 2. Create Genre Table (Allow for a "Mix" Genre with MediaTypeID = 7)
+CREATE TABLE Media (
+    MediaID INTEGER PRIMARY KEY,
+    Title TEXT NOT NULL,
+    GenreID INTEGER,
     MediaTypeID INTEGER,
+    FOREIGN KEY (GenreID) REFERENCES Genre(GenreID),
     FOREIGN KEY (MediaTypeID) REFERENCES MediaType(MediaTypeID)
 );
 
@@ -90,7 +99,7 @@ CREATE TABLE ItemAuthor (
     UNIQUE (ItemID, AuthorID) -- Ensure unique pairing of Item and Author
 );
 
--- Insert data into MediaType Table, including ID 6 for "Mix"
+--11 Insert data into MediaType Table, including ID 6 for "Mix"
 INSERT INTO MediaType (MediaTypeName)
 VALUES 
     ('Games'),          --1
@@ -100,7 +109,11 @@ VALUES
     ('Art'),            --5
     ('Mix');            --6
 
--- Insert data into Genre Table
+--12 To add the column MediaTypeID to the Genre table    
+ALTER TABLE Genre
+ADD MediaTypeID INT;
+
+--13 Insert data into Genre Table
 INSERT INTO Genre (GenreName, MediaTypeID)
 VALUES 
     ('FPS', 1),          -- Games 1
@@ -126,7 +139,7 @@ VALUES
     ('Comedy', 6),       -- Mix 21
     ('Action', 6);       -- Mix 22
 
--- Insert data into Item Table
+--14 Insert data into Item Table
 INSERT INTO Item (ItemName, ReleaseYear, GenreID)
 VALUES 
     ('God of War', 2018, 2),                           -- RPG, Games
@@ -149,7 +162,7 @@ VALUES
     ('Girl with a Pearl Earring', 1665, 19),           -- Renaissance, Art
     ('The Creation of Adam', 1512, 19);                -- Renaissance, Art
 
--- Insert data into Platform Table
+--15 Insert data into Platform Table
 INSERT INTO Platform (PlatformName)
 VALUES 
     ('PlayStation'), --1
@@ -163,7 +176,7 @@ VALUES
     ('Trade Paperback'), --9
     ('Museum'); --10
 
--- Insert data into AgeRating Table
+--16 Insert data into AgeRating Table
 INSERT INTO AgeRating (AgeRatingName)
 VALUES 
     ('E for Everyone'),
@@ -171,7 +184,7 @@ VALUES
     ('PG-13'),
     ('R');
 
--- Insert data into Author Table
+--17 Insert data into Author Table
 INSERT INTO Author (AuthorName)
 VALUES 
     ('David Jaffe'),          -- Creator of God of War
@@ -188,7 +201,7 @@ VALUES
     ('Johannes Vermeer'),     -- Painter of Girl with a Pearl Earring
     ('Michelangelo');         -- Painter of The Creation of Adam
 
--- Insert data into ItemAuthor Table to link items with authors
+--18 Insert data into ItemAuthor Table to link items with authors
 INSERT INTO ItemAuthor (ItemID, AuthorID)
 VALUES 
     (1, 5),   -- God of War by David Jaffe
@@ -196,50 +209,4 @@ VALUES
     (3, 7),   -- Crazy in Love by Beyoncé
     (4, 8),   -- Fancy by Iggy Azalea
     (5, 9),   -- Uptown Funk by Mark Ronson
-    (6, 10),  -- Lose You to Love Me by Selena Gomez
-    (11, 11), -- Spider-Man: Homecoming by Stan Lee
-    (12, 12), -- Batman: Year One by Frank Miller
-    (13, 13), -- X-Men: Days of Future Past by Chris Claremont
-    (14, 14), -- Justice League: Origin by Geoff Johns
-    (16, 15), -- The Last Supper by Leonardo da Vinci
-    (18, 16), -- Girl with a Pearl Earring by Johannes Vermeer
-    (19, 17); -- The Creation of Adam by Michelangelo
-
--- Insert data into ItemPlatform Table
-INSERT INTO ItemPlatform (ItemID, PlatformID)
-VALUES 
-    (1, 1),  -- God of War on PlayStation
-    (1, 2),  -- God of War on Steam
-    (2, 3),  -- Dune as Hardcover
-    (3, 4),  -- Crazy in Love on Spotify
-    (4, 4),  -- Fancy on Spotify
-    (5, 4),  -- Uptown Funk on Spotify
-    (6, 4),  -- Lose You to Love Me on Spotify
-    (7, 3),  -- Harry Potter on Hardcover
-    (8, 3),  -- The Lightning Thief on Hardcover
-    (9, 5),  -- Super Mario Odyssey on Nintendo Switch
-    (10, 5), -- Sonic the Hedgehog on Nintendo Switch
-    (11, 8), -- Spider-Man: Homecoming as Digital
-    (12, 9), -- Batman: Year One as Trade Paperback
-    (13, 8), -- X-Men: Days of Future Past as Digital
-    (14, 9), -- Justice League: Origin as Trade Paperback
-    (15, 10), -- Mona Lisa in Museum
-    (16, 10), -- The Last Supper in Museum
-    (17, 10), -- Starry Night in Museum
-    (18, 10), -- Girl with a Pearl Earring in Museum
-    (19, 10); -- The Creation of Adam in Museum
-
--- Insert data into MediaTypeGenre Table
-INSERT INTO MediaTypeGenre (MediaTypeID, GenreID)
-VALUES 
-    (1, 1),  -- Games linked with FPS genre
-    (1, 2),  -- Games linked with RPG genre
-    (2, 6),  -- Books linked with Fantasy genre
-    (2, 7),  -- Books linked with Sci-Fi genre
-    (3, 9),  -- Music linked with Rock genre
-    (3, 10), -- Music linked with Pop genre
-    (4, 13), -- Movies linked with Documentary genre
-    (4, 14), -- Movies linked with Thriller genre
-    (5, 15), -- Art linked with Abstract genre
-    (5, 19), -- Art linked with Renaissance genre
-    (6, 19); -- Mix linked with Renaissance genre
+    (6, 10)
