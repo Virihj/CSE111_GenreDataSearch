@@ -151,21 +151,21 @@ VALUES
     (4, 'R');                 -- 4
 
 -- 17 Insert data into Author Table
-INSERT INTO Author (AuthorID, AuthorName)
+INSERT INTO Author (AuthorName)
 VALUES 
-    (1, 'David Jaffe'),       -- 1 Creator of God of War
-    (2, 'Frank Herbert'),     -- 2 Author of Dune
-    (3, 'Beyoncé'),           -- 3 Artist for Crazy in Love
-    (4, 'Iggy Azalea'),       -- 4 Artist for Fancy
-    (5, 'Mark Ronson'),       -- 5 Artist for Uptown Funk
-    (6, 'Selena Gomez'),      -- 6 Artist for Lose You to Love Me
-    (7, 'Stan Lee'),          -- 7 Writer for Spider-Man: Homecoming
-    (8, 'Frank Miller'),      -- 8 Writer for Batman: Year One
-    (9, 'Chris Claremont'),   -- 9 Writer for X-Men: Days of Future Past
-    (10, 'Geoff Johns'),      -- 10 Writer for Justice League: Origin
-    (11, 'Leonardo da Vinci'),-- 11 Painter of The Last Supper
-    (12, 'Johannes Vermeer'), -- 12 Painter of Girl with a Pearl Earring
-    (13, 'Michelangelo');     -- 13 Painter of The Creation of Adam
+    ('David Jaffe'),       -- 1 Creator of God of War
+    ('Frank Herbert'),     -- 2 Author of Dune
+    ('Beyoncé'),           -- 3 Artist for Crazy in Love
+    ('Iggy Azalea'),       -- 4 Artist for Fancy
+    ('Mark Ronson'),       -- 5 Artist for Uptown Funk
+    ('Selena Gomez'),      -- 6 Artist for Lose You to Love Me
+    ('Stan Lee'),          -- 7 Writer for Spider-Man: Homecoming
+    ('Frank Miller'),      -- 8 Writer for Batman: Year One
+    ('Chris Claremont'),   -- 9 Writer for X-Men: Days of Future Past
+    ( 'Geoff Johns'),      -- 10 Writer for Justice League: Origin
+    ('Leonardo da Vinci'),-- 11 Painter of The Last Supper
+    ('Johannes Vermeer'), -- 12 Painter of Girl with a Pearl Earring
+    ('Michelangelo');     -- 13 Painter of The Creation of Adam
 
 
 
