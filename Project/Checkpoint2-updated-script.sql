@@ -7,6 +7,8 @@ DROP TABLE IF EXISTS MediaTypeGenre;
 DROP TABLE IF EXISTS AgeRating;
 DROP TABLE IF EXISTS Media;
 DROP TABLE IF EXISTS Author;
+DROP TABLE IF EXISTS ItemGenre;
+DROP TABLE IF EXISTS ItemAuthor;
 
 
 -- 1. Create MediaType Table
@@ -19,7 +21,7 @@ CREATE TABLE MediaType (
 CREATE TABLE Genre (
     GenreID INTEGER PRIMARY KEY AUTOINCREMENT,
     GenreName TEXT NOT NULL,
-    MediaTypeID INTEGER,
+    MediaTypeID INTEGER NOT NULL,
     FOREIGN KEY (MediaTypeID) REFERENCES MediaType(MediaTypeID)
 );
 
@@ -33,10 +35,10 @@ CREATE TABLE Media (
     FOREIGN KEY (MediaTypeID) REFERENCES MediaType(MediaTypeID)
 );
 
--- 3. Create Item Table
+--3 Create Item Table
 CREATE TABLE Item (
     ItemID INTEGER PRIMARY KEY AUTOINCREMENT,
-    ItemName TEXT NOT NULL,
+    ItemName TEXT NOT NULL, 
     ReleaseYear INTEGER,
     GenreID INTEGER,
     MediaTypeID INTEGER,
@@ -44,25 +46,25 @@ CREATE TABLE Item (
     PlatformID INTEGER,
     AgeRatingID INTEGER,
     FOREIGN KEY (GenreID) REFERENCES Genre(GenreID),
-    FOREIGN KEY (MediaTypeID) REFERENCES MediaType(MediaTypeID)
-    FOREIGN KEY (AuthorID) REFERENCES Author(AuthorID)
-    FOREIGN KEY (PlatformID) REFERENCES Platform(PlatformID)
+    FOREIGN KEY (MediaTypeID) REFERENCES MediaType(MediaTypeID),
+    FOREIGN KEY (AuthorID) REFERENCES Author(AuthorID),
+    FOREIGN KEY (PlatformID) REFERENCES Platform(PlatformID),
     FOREIGN KEY (AgeRatingID) REFERENCES AgeRating(AgeRatingID)
 );
 
--- 4. Create Platform Table
+-- 5 Create Platform Table
 CREATE TABLE Platform (
     PlatformID INTEGER PRIMARY KEY AUTOINCREMENT,
     PlatformName TEXT NOT NULL
 );
 
--- 5. Create AgeRating Table
+-- 6 Create AgeRating Table
 CREATE TABLE AgeRating (
     AgeRatingID INTEGER PRIMARY KEY AUTOINCREMENT,
     AgeRatingName TEXT NOT NULL
 );
 
--- 6. Create MediaTypeGenre Table (Junction Table for MediaType and Genre)
+-- 7 Create MediaTypeGenre Table (Junction Table for MediaType and Genre)
 CREATE TABLE MediaTypeGenre (
     MediaTypeGenreID INTEGER PRIMARY KEY AUTOINCREMENT,
     MediaTypeID INTEGER NOT NULL,
@@ -72,27 +74,21 @@ CREATE TABLE MediaTypeGenre (
     UNIQUE (MediaTypeID, GenreID) -- Ensure each MediaType-Genre combination is unique
 );
 
--- 9. Create Author Table
+-- 8 Create Author Table
 CREATE TABLE Author (
     AuthorID INTEGER PRIMARY KEY AUTOINCREMENT,
     AuthorName TEXT NOT NULL
 );
 
--- 7. Create Item Table with author, platform, and age rating as foreign keys
-CREATE TABLE Item (
-    ItemID INTEGER PRIMARY KEY AUTOINCREMENT,
-    ItemName TEXT NOT NULL,
-    ReleaseYear INTEGER,
-    GenreID INTEGER,
-    AuthorID INTEGER,
-    PlatformID INTEGER,
-    AgeRatingID INTEGER,
-    FOREIGN KEY (GenreID) REFERENCES Genre(GenreID),
+--9 Create Junction Table for Item and Author
+CREATE TABLE ItemAuthor (
+    ItemAuthorID INTEGER PRIMARY KEY AUTOINCREMENT,
+    ItemID INTEGER NOT NULL,
+    AuthorID INTEGER NOT NULL,
+    FOREIGN KEY (ItemID) REFERENCES Item(ItemID),
     FOREIGN KEY (AuthorID) REFERENCES Author(AuthorID),
-    FOREIGN KEY (PlatformID) REFERENCES Platform(PlatformID),
-    FOREIGN KEY (AgeRatingID) REFERENCES AgeRating(AgeRatingID)
+    UNIQUE (ItemID, AuthorID) -- Ensure each Item-Author combination is unique
 );
-
 
 --11 Insert data into MediaType Table, including ID 6 for "Mix"
 INSERT INTO MediaType (MediaTypeName)
@@ -104,9 +100,6 @@ VALUES
     ('Art'),            --5
     ('Mix');            --6
 
---12 To add the column MediaTypeID to the Genre table    
-ALTER TABLE Genre
-ADD MediaTypeID INT;
 
 --13 Insert data into Genre Table
 INSERT INTO Genre (GenreName, MediaTypeID)
@@ -175,6 +168,7 @@ VALUES
     (13, 'Michelangelo');     -- 13 Painter of The Creation of Adam
 
 
+
 -- Insert more data into Item Table
 INSERT INTO Item (ItemName, ReleaseYear, GenreID, MediaTypeID, AuthorID, PlatformID, AgeRatingID)
 VALUES 
@@ -219,3 +213,18 @@ VALUES
 --     ('Starry Night', 1889, 19),                        -- Renaissance, Art
 --     ('Girl with a Pearl Earring', 1665, 19),           -- Renaissance, Art
 --     ('The Creation of Adam', 1512, 19);                -- Renaissance, Art
+
+
+--1 updated query for searching items by authors
+SELECT 
+    Item.ItemName, 
+    Item.ReleaseYear, 
+    Author.AuthorName
+FROM 
+    Item
+JOIN 
+    ItemAuthor ON Item.ItemID = ItemAuthor.ItemID -- Use ItemID for the join
+JOIN 
+    Author ON ItemAuthor.AuthorID = Author.AuthorID
+WHERE 
+    Author.AuthorName LIKE '%AuthorName%';
