@@ -9,6 +9,7 @@ DROP TABLE IF EXISTS Media;
 DROP TABLE IF EXISTS Author;
 DROP TABLE IF EXISTS ItemGenre;
 DROP TABLE IF EXISTS ItemAuthor;
+
 PRAGMA foreign_keys = ON;
 
 
@@ -229,7 +230,12 @@ VALUES
     (17, 19), -- Spider-Man: Homecoming by Stan Lee
     (18, 20), -- Batman: Year One by Frank Miller
     (19, 21), -- X-Men: Days of Future Past by Chris Claremont
-    (20, 22); -- Justice League: Origin by Geoff Johns
+    (20, 22), -- Justice League: Origin by Geoff Johns
+    (21, 11),
+    (22, 11),
+    (23, 12),
+    (24, 13),
+    (25, 14);
 
 -- Insert additional data into ItemPlatform Table
 INSERT OR IGNORE INTO ItemPlatform (ItemID, PlatformID)
