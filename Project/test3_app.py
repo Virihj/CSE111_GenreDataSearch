@@ -35,17 +35,50 @@ def list_items(conn):
     try:
         cursor = conn.cursor()
         cursor.execute("""
-            SELECT i.ItemName, i.ReleaseYear, a.AuthorName
+            SELECT 
+                i.ItemName, 
+                i.ReleaseYear, 
+                g.GenreName, 
+                a.AuthorName, 
+                ar.AgeRatingName
             FROM Item i
+            LEFT JOIN Genre g ON i.GenreID = g.GenreID
             LEFT JOIN ItemAuthor ia ON i.ItemID = ia.ItemID
             LEFT JOIN Author a ON ia.AuthorID = a.AuthorID
+            LEFT JOIN AgeRating ar ON i.AgeRatingID = ar.AgeRatingID
         """)
         items = cursor.fetchall()
         print("Available Items:")
         for item in items:
-            print(f"Item Name: {item[0]}, Release Year: {item[1]}, Author: {item[2]}")
+            print(f"Item Name: {item[0]}, Release Year: {item[1]}, Genre: {item[2]}, Author: {item[3]}, Age Rating: {item[4]}")
     except sqlite3.Error as e:
         print(f"Error retrieving items: {e}")
+
+
+# def list_items(conn):
+#     try:
+#         cursor = conn.cursor()
+#         cursor.execute("""
+#             SELECT DISTINCT
+#                 i.ItemName,
+#                 i.ReleaseYear,
+#
+#                 COALESCE(a.AuthorName, 'Unknown') AS AuthorName,
+#                 COALESCE(g.GenreName, 'Unknown') AS GenreName,
+#                 COALESCE(p.PlatformName, 'Unknown') AS PlatformName
+#             FROM Item i
+#             LEFT JOIN ItemAuthor ia ON i.ItemID = ia.ItemID
+#             LEFT JOIN Author a ON ia.AuthorID = a.AuthorID
+#             LEFT JOIN Genre g ON i.GenreID = g.GenreID
+#             LEFT JOIN ItemPlatform ip ON i.ItemID = ip.ItemID
+#             LEFT JOIN Platform p ON ip.PlatformID = p.PlatformID
+#         """)
+#         items = cursor.fetchall()
+#         print("Available Items:")
+#         for item in items:
+#             print(f"Item Name: {item[0]}, Release Year: {item[1]}, Author: {item[2]}, Genre: {item[3]}, Platform: {item[4]}")
+#     except sqlite3.Error as e:
+#         print(f"Error retrieving items: {e}")
 
 def prompt_with_list(prompt_message, list_function, conn):
     while True:
