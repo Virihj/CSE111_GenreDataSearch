@@ -64,11 +64,17 @@ INSERT INTO Item (ItemName, ReleaseYear, GenreID)
 VALUES ('Cyberpunk', 2020, (SELECT GenreID FROM Genre WHERE GenreName = 'RPG'));
 
 -- 16. Link 'Cyberpunk' with 'Steam Platform' and 'Xbox'
-INSERT INTO ItemPlatform (ItemID, PlatformID) VALUES 
-    ((SELECT ItemID FROM Item WHERE ItemName = 'Cyberpunk'), 
-     (SELECT PlatformID FROM Platform WHERE PlatformName = 'Steam Platform')),
-    ((SELECT ItemID FROM Item WHERE ItemName = 'Cyberpunk'), 
-     (SELECT PlatformID FROM Platform WHERE PlatformName = 'Xbox'));
+INSERT INTO ItemPlatform (ItemID, PlatformID)
+SELECT
+    i.ItemID,
+    p.PlatformID
+FROM
+    Item i,
+    Platform p
+WHERE
+    i.ItemName = 'Cyberpunk'
+    AND p.PlatformName IN ('Steam Platform', 'Xbox');
+
 
 -- 17. Find all items in the 'Fantasy' genre
 SELECT ItemName FROM Item
